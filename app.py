@@ -2,19 +2,23 @@
 import os
 from PIL import Image
 import argparse
+from pillow_heif import register_heif_opener
+
+# Register HEIF opener with Pillow
+register_heif_opener()
 
 # Define standard folder names relative to the script location
 INPUT_FOLDER = "inputs"
 OUTPUT_FOLDER = "outputs"
 
-def convert_webp_to_png_and_jpeg(base_filename, quality=85):
+def convert_heic_to_png_and_jpeg(base_filename, quality=85):
     """
-    Looks for base_filename.webp in the INPUT_FOLDER, converts it to both PNG
+    Looks for base_filename.heic in the INPUT_FOLDER, converts it to both PNG
     and JPEG formats, and saves them into the OUTPUT_FOLDER.
 
     Args:
         base_filename (str): The base name of the input file (without extension).
-                                Example: 'my_image' for 'inputs/my_image.webp'.
+                                Example: 'my_image' for 'inputs/my_image.heic'.
         quality (int): The quality setting for JPEG conversion (1-100). Default 85.
 
     Returns:
@@ -26,8 +30,8 @@ def convert_webp_to_png_and_jpeg(base_filename, quality=85):
     input_path = os.path.join(INPUT_FOLDER, base_filename)
 
     
-    # Remove the extension from the base_filename ".webp"
-    if base_filename.endswith(".webp"):
+    # Remove the extension from the base_filename ".heic"
+    if base_filename.endswith(".heic"):
         str_core_filename = base_filename[:-5]
     else:
         str_core_filename = base_filename
@@ -46,7 +50,7 @@ def convert_webp_to_png_and_jpeg(base_filename, quality=85):
         # 2. Ensure output directory exists
         os.makedirs(OUTPUT_FOLDER, exist_ok=True) # Creates dir if not exists
 
-        # 3. Open the WebP image
+        # 3. Open the HEIC image
         img = Image.open(input_path)
 
         # --- PNG Conversion ---
@@ -96,12 +100,12 @@ def convert_webp_to_png_and_jpeg(base_filename, quality=85):
 # --- Command-Line Execution ---
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description=f"Convert image_name.webp from './{INPUT_FOLDER}/' folder to both PNG and JPEG formats, saving them into the './{OUTPUT_FOLDER}/' folder."
+        description=f"Convert image_name.heic from './{INPUT_FOLDER}/' folder to both PNG and JPEG formats, saving them into the './{OUTPUT_FOLDER}/' folder."
     )
     parser.add_argument(
         "-f", "--filename",
         required=True,
-        help=f"Base filename of the WebP image (e.g., 'my_image' for '{INPUT_FOLDER}/my_image.webp')."
+        help=f"Base filename of the HEIC image (e.g., 'my_image' for '{INPUT_FOLDER}/my_image.heic')."
     )
     parser.add_argument(
         "-q", "--quality",
@@ -117,4 +121,4 @@ if __name__ == "__main__":
         print("Error: Quality must be between 1 and 100.")
     else:
         # Call the conversion function with the base filename
-        convert_webp_to_png_and_jpeg(args.filename, args.quality)
+        convert_heic_to_png_and_jpeg(args.filename, args.quality)

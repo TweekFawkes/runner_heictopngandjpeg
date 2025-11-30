@@ -1,19 +1,19 @@
 runner:
-  name: WebP to PNG and JPG
-  description: Convert a WebP file to PNG and JPG formats.
+  name: HEIC to PNG and JPG
+  description: Convert a HEIC file to PNG and JPG formats.
   version: 0.0.1
 
 build:
   memorysize: 1280
   commands: |
     echo "START: Building the runner"
-    apt install -y webp libwebp-dev
+    apt install -y libheif-dev libde265-dev
     python3 -m pip install -U -r requirements.txt
     echo "END: Building the runner"
 
 webform:
   - name: image_name
-    prompt: WebP File to Convert
+    prompt: HEIC File to Convert
     type: file
 
 launch:
